@@ -66,12 +66,13 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Log.i(TAG, "Current user logged in");
-        }else {
-            Log.i(TAG, "NO user logged in");
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             i.putExtra("user", currentUser);
             startActivity(i);
             finish();
+        }else {
+            Log.i(TAG, "NO user logged in");
+
         }
     }
 
