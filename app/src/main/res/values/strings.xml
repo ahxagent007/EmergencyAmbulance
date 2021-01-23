@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EmergencyAmbulance</string>
+    <string name="maps_api_key">AIzaSyA7HjUyXHqAN1jjNTTYlbAB2dPhif7UwS0</string>
 </resources>
