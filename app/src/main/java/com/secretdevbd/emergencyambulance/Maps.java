@@ -23,6 +23,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.secretdevbd.emergencyambulance.models.Hospital;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +47,40 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
 
     private GoogleMap mMap;
 
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
         checkAndRequestPermissions();
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("Hospital");
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+
+                    Hospital hospital = ds.getValue(Hospital.class);
+                    Log.i(TAG, hospital.getName());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
