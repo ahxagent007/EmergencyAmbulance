@@ -1,5 +1,6 @@
 package com.secretdevbd.emergencyambulance;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.PermissionChecker;
@@ -36,7 +37,9 @@ import java.util.List;
 public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
     String TAG = "XIAN";
 
-    double latitude = 0, longitude = 0;
+
+    double longitude = 23.737820;
+    double latitude = 90.395290;
     String API_KEY = "AIzaSyA7HjUyXHqAN1jjNTTYlbAB2dPhif7UwS0";
 
     private static final int PERMISSION_REQUES_CODE = 99;
@@ -50,7 +53,10 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
     FirebaseDatabase database;
     DatabaseReference myRef;
 
+    ArrayList<Hospital> HOSPITALS = new ArrayList<>();
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +72,28 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                HOSPITALS = new ArrayList<>();
+
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
 
                     Hospital hospital = ds.getValue(Hospital.class);
                     Log.i(TAG, hospital.getName());
 
+                    HOSPITALS.add(hospital);
                 }
+
+                if(mMap != null){ //prevent crashing if the map doesn't exist yet (eg. on starting activity)
+                    mMap.clear();
+
+                    for (Hospital H : HOSPITALS){
+                        LatLng hospital = new LatLng(H.getLatitude(), H.getLongitude());
+                        mMap.addMarker(new MarkerOptions()
+                                .position(hospital)
+                                .title(H.getName()));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                    }
+                }
+                getLocationAndSetMap();
             }
 
             @Override
@@ -119,34 +141,13 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "NO LOCATION PERMISSION");
-        }else {
-            Log.i(TAG, "LOCATION PERMISSION READY");
-            mMap.setMyLocationEnabled(true);
+        for (Hospital H : HOSPITALS){
+            LatLng hospital = new LatLng(H.getLatitude(), H.getLongitude());
+            mMap.addMarker(new MarkerOptions()
+                    .position(hospital)
+                    .title(H.getName()));
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(-34, 150))
-                .anchor(0.5f, 0.5f)
-                .title("title")
-                .snippet("snippet"));
-
-        mMap.setOnMarkerClickListener(this);
-
-        final LatLng perthLocation = new LatLng(-34, 152);
-        Marker perth = mMap.addMarker(
-                new MarkerOptions()
-                        .position(perthLocation)
-                        .draggable(true)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        );
 
     }
 
@@ -170,6 +171,124 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
         return false;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getLocation(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                checkAndRequestPermissions();
+                return;
+            }
+        }
+        else{
+            int permissionLocation = PermissionChecker.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+            if(permissionLocation != PackageManager.PERMISSION_GRANTED ){
+
+                checkAndRequestPermissions();
+            }
+        }
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        try{
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        } catch (Exception e ){
+            Toast.makeText(getApplicationContext(),"Can't Access user location", Toast.LENGTH_LONG).show();
+        }
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListener);
+
+        zoomToCurrentLoc();
+
+        Log.i(TAG, "EMERGENCY LOC :: "+latitude+","+longitude);
+    }
+    private final LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
+    private void getLocationAndSetMap(){
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                checkAndRequestPermissions();
+                return;
+            }
+        }
+        else{
+            int permissionLocation = PermissionChecker.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+            if(permissionLocation != PackageManager.PERMISSION_GRANTED ){
+
+                checkAndRequestPermissions();
+            }
+        }
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        try{
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        } catch (Exception e ){
+            Toast.makeText(getApplicationContext(),"Can't Access user location", Toast.LENGTH_LONG).show();
+        }
+
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListener);
+
+        zoomToCurrentLoc();
+
+        Log.i(TAG, "ownLocation LOC :: "+latitude+","+longitude);
+    }
+
+    private void zoomToCurrentLoc(){
+        LatLng ownLocation = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions()
+                .position(ownLocation)
+                .title("Your Location")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(ownLocation));
+        moveToCurrentLocation(ownLocation);
+    }
+
+    private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000, null);
+
+
     }
 
 

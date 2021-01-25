@@ -36,10 +36,28 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(new Intent(getApplicationContext(), Maps.class));
 
+        btn_hospitals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Hospital.class));
+            }
+        });
+        btn_ambulance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Ambulance.class));
+            }
+        });
         btn_maps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Maps.class));
+            }
+        });
+        btn_admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Admin.class));
             }
         });
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="50dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/ET_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Hospital Name"/>
+
+    <EditText
+        android:id="@+id/ET_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Title"/>
+
+    <EditText
+        android:id="@+id/ET_lat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Latitude"
+        android:inputType="numberDecimal"/>
+
+    <EditText
+        android:id="@+id/ET_long"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Longitude"
+        android:inputType="numberDecimal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:textColor="@color/black"/>
+
+        <CheckBox
+            android:id="@+id/chkJava"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="All"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox
+            android:id="@+id/chkPython"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Heart"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox
+            android:id="@+id/chkAndroid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Eye"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox
+            android:id="@+id/chkAngular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="AngularJS"
+            android:onClick="onCheckboxClicked"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:padding="10dp"/>
+
+
+
+
+
+</LinearLayout>
