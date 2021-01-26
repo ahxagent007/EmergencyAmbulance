@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         ET_username.setText(user.getEmail());
 
-        startActivity(new Intent(getApplicationContext(), Maps.class));
+        //startActivity(new Intent(getApplicationContext(), Hospital.class));
 
         btn_hospitals.setOnClickListener(new View.OnClickListener() {
             @Override

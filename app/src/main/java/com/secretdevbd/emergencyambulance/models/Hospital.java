@@ -2,14 +2,14 @@ package com.secretdevbd.emergencyambulance.models;
 
 public class Hospital {
 
-    int id;
+    long id;
     String category, name, title;
     double latitude, Longitude;
 
     public Hospital() {
     }
 
-    public Hospital(int id, String category, String name, String title, double latitude, double longitude) {
+    public Hospital(long id, String category, String name, String title, double latitude, double longitude) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -18,7 +18,7 @@ public class Hospital {
         Longitude = longitude;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
