@@ -21,11 +21,17 @@ public class Admin extends AppCompatActivity {
 
         btn_hospital = findViewById(R.id.btn_hospital);
         btn_ambulance = findViewById(R.id.btn_ambulance);
-        
+
         btn_hospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), AddHospital.class));
+            }
+        });
+        btn_ambulance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AddAmbulance.class));
             }
         });
 

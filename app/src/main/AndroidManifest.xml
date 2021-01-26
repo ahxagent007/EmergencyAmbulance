@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EmergencyAmbulance">
-        <activity android:name=".AddHospital"></activity>
+        <activity android:name=".AddAmbulance"></activity>
+        <activity android:name=".AddHospital" />
         <activity android:name=".Ambulance" />
         <activity android:name=".Hospital" />
         <activity android:name=".Admin" />

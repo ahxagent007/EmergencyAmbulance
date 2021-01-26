@@ -38,8 +38,9 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
     String TAG = "XIAN";
 
 
-    double longitude = 23.737820;
-    double latitude = 90.395290;
+    double latitude = 23.737820;
+    double longitude = 90.395290;
+
     String API_KEY = "AIzaSyA7HjUyXHqAN1jjNTTYlbAB2dPhif7UwS0";
 
     private static final int PERMISSION_REQUES_CODE = 99;
@@ -212,8 +213,8 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
     }
     private final LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            longitude = location.getLongitude();
             latitude = location.getLatitude();
+            longitude = location.getLongitude();
         }
 
         @Override
@@ -257,8 +258,8 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         try{
-            longitude = location.getLongitude();
             latitude = location.getLatitude();
+            longitude = location.getLongitude();
         } catch (Exception e ){
             Toast.makeText(getApplicationContext(),"Can't Access user location", Toast.LENGTH_LONG).show();
         }
