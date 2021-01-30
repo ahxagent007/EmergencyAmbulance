@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         btn_hospitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Hospital.class));
+                startActivity(new Intent(getApplicationContext(), HospitalActivity.class));
             }
         });
         btn_ambulance.setOnClickListener(new View.OnClickListener() {

@@ -19,7 +19,7 @@
         <activity android:name=".AddAmbulance"></activity>
         <activity android:name=".AddHospital" />
         <activity android:name=".Ambulance" />
-        <activity android:name=".Hospital" />
+        <activity android:name=".HospitalActivity" />
         <activity android:name=".Admin" />
 
         <meta-data
