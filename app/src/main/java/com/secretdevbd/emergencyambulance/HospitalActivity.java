@@ -1,11 +1,16 @@
 package com.secretdevbd.emergencyambulance;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.secretdevbd.emergencyambulance.models.Hospital;
 
@@ -38,6 +45,7 @@ public class HospitalActivity extends AppCompatActivity {
     DatabaseReference myRef;
 
     ArrayList<Hospital> HOSPITALS = new ArrayList<>();
+    ArrayList<Hospital> SEARCH_HOSPITALS = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +73,45 @@ public class HospitalActivity extends AppCompatActivity {
                     HOSPITALS.add(hospital);
                 }
 
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                RV_hospitals.setLayoutManager(mLayoutManager);
+
+                RecyclerView.Adapter mRecycleAdapter = new RecycleViewAdapterForAllServer(getApplicationContext(), HOSPITALS);
+                RV_hospitals.setAdapter(mRecycleAdapter);
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        ET_searchHospital.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(TAG, s.toString());
+                SEARCH_HOSPITALS = new ArrayList<>();
+                for (Hospital h : HOSPITALS){
+                    if(h.getName().toUpperCase().contains(s.toString().toUpperCase()) || h.getCategory().toUpperCase().contains(s.toString().toUpperCase())
+                            || h.getTitle().toUpperCase().contains(s.toString().toUpperCase())){
+                        SEARCH_HOSPITALS.add(h);
+                    }
+
+                    RecyclerView.Adapter mRecycleAdapter = new RecycleViewAdapterForAllServer(getApplicationContext(), SEARCH_HOSPITALS);
+                    RV_hospitals.setAdapter(mRecycleAdapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -99,7 +140,7 @@ public class HospitalActivity extends AppCompatActivity {
         @Override
         public RecycleViewAdapterForAllServer.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View v = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.single_server_view, viewGroup, false);
+                    .inflate(R.layout.single_hospital, viewGroup, false);
 
             RecycleViewAdapterForAllServer.ViewHolder viewHolder = new RecycleViewAdapterForAllServer.ViewHolder(v);
             return viewHolder;
@@ -115,28 +156,25 @@ public class HospitalActivity extends AppCompatActivity {
             }else{
 
             }*/
-            viewHolder.btn_server.setText(Hospitals.get(i).getServer_name()); //.substring(7, ServerList.get(i).getFtp_server().length())
-
+            viewHolder.TV_hospitalName.setText(Hospitals.get(i).getName());
+            viewHolder.TV_hospitalType.setText(Hospitals.get(i).getCategory());
+            viewHolder.TV_hospitalDetails.setText(Hospitals.get(i).getTitle());
 
             viewHolder.setClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(View view, int position, boolean isLongClick) {
                     if (isLongClick) {
 
-                        //Log.i(TAG, ServerList.get(position));
-
-                        /*Uri uri = Uri.parse(ServerList.get(position).getFtp_server()); // missing 'http://' will cause crashed
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);*/
-
-
                     } else {
-
-                        Intent i = new Intent(getContext(), WebViewActivity.class);
-                        i.putExtra("WEBSITE", "http://"+Hospitals.get(position).getFtp_server().substring(7, ServerList.get(position).getFtp_server().length()));
-                        i.putExtra("WEBSITE_NAME", Hospitals.get(position).getServer_name());
-                        startActivity(i);
-
+                        //Google Map open
+                        String loc = Hospitals.get(i).getLatitude()+","+Hospitals.get(i).getLongitude();
+                        if(loc != "0.0,0.0"){
+                            String uri = "http://maps.google.com/maps?daddr=" +loc;
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(getApplicationContext(), "No Location Registered", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
@@ -149,16 +187,17 @@ public class HospitalActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-            private TextView btn_server;
-            ImageView IV_server_icon;
+            private TextView TV_hospitalName, TV_hospitalType, TV_hospitalDetails;
+            //ImageView IV_server_icon;
 
             private ItemClickListener clickListener;
 
             public ViewHolder(View itemView) {
                 super(itemView);
 
-                btn_server = itemView.findViewById(R.id.btn_server);
-                IV_server_icon = itemView.findViewById(R.id.IV_server_icon);
+                TV_hospitalName = itemView.findViewById(R.id.TV_hospitalName);
+                TV_hospitalType = itemView.findViewById(R.id.TV_hospitalType);
+                TV_hospitalDetails = itemView.findViewById(R.id.TV_hospitalDetails);
 
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
