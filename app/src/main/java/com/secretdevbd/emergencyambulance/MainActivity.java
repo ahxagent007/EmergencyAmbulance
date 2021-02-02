@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         btn_ambulance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Ambulance.class));
+                startActivity(new Intent(getApplicationContext(), AmbulanceActivity.class));
             }
         });
         btn_maps.setOnClickListener(new View.OnClickListener() {

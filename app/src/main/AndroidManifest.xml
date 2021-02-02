@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,7 @@
         android:theme="@style/Theme.EmergencyAmbulance">
         <activity android:name=".AddAmbulance"></activity>
         <activity android:name=".AddHospital" />
-        <activity android:name=".Ambulance" />
+        <activity android:name=".AmbulanceActivity" />
         <activity android:name=".HospitalActivity" />
         <activity android:name=".Admin" />
 

@@ -5,6 +5,9 @@ public class Ambulance {
     String reg_no, phone;
     double latitude, longitude;
 
+    public Ambulance() {
+    }
+
     public Ambulance(long id, String reg_no, String phone, double latitude, double longitude) {
         this.id = id;
         this.reg_no = reg_no;

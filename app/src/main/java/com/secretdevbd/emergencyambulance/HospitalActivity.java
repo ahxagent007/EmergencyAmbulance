@@ -54,7 +54,7 @@ public class HospitalActivity extends AppCompatActivity {
 
         RV_hospitals = findViewById(R.id.RV_hospitals);
         ET_searchHospital = findViewById(R.id.ET_searchHospital);
-        btn_searchHospital = findViewById(R.id.btn_searchHospital);
+        //btn_searchHospital = findViewById(R.id.btn_searchHospital);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Hospital");
@@ -115,12 +115,12 @@ public class HospitalActivity extends AppCompatActivity {
             }
         });
 
-        btn_searchHospital.setOnClickListener(new View.OnClickListener() {
+        /*btn_searchHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
     }
 
     public class RecycleViewAdapterForAllServer extends RecyclerView.Adapter<RecycleViewAdapterForAllServer.ViewHolder> {
