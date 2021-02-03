@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SIGN-UP"
+                android:textColor="#f2f2f2"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:background="#333333"
+                android:padding="10dp"
+                />
+
+
+            <EditText
+                android:id="@+id/ET_regEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email Address"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:textColorHint="#1c1c1c"
+                android:inputType="textEmailAddress"
+                />
+
+            <EditText
+                android:id="@+id/ET_pWord1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:textColorHint="#1c1c1c"
+                android:inputType="textPassword"
+                />
+            <EditText
+                android:id="@+id/ET_pWord2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Re-enter Password"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:textColorHint="#1c1c1c"
+                android:inputType="textPassword"
+                />
+
+            <Button
+                android:id="@+id/btn_signUpDone"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Sign-Up"
+                android:layout_margin="10dp"
+                android:textColor="#FFFFFF"/>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

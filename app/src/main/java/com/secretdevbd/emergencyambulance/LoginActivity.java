@@ -3,13 +3,17 @@ package com.secretdevbd.emergencyambulance;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,12 +22,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class LoginActivity extends AppCompatActivity {
 
     String TAG = "XIAN";
 
     EditText ET_email, ET_pass;
-    Button btn_login;
+    Button btn_login, btn_signup;
     ProgressBar PB_loading;
 
     private FirebaseAuth mAuth;
@@ -40,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         ET_pass = findViewById(R.id.ET_pass);
         btn_login = findViewById(R.id.btn_login);
         PB_loading = findViewById(R.id.PB_loading);
+        btn_signup = findViewById(R.id.btn_signup);
 
         PB_loading.setVisibility(View.INVISIBLE);
 
@@ -56,8 +64,14 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+        btn_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignUpForm();
+            }
+        });
+    }
 
     @Override
     public void onStart() {
@@ -75,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
-
 
     public void signIn(String email, String password){
         Log.i(TAG, email+" "+ password);
@@ -105,6 +118,98 @@ public class LoginActivity extends AppCompatActivity {
                         PB_loading.setVisibility(View.INVISIBLE);
 
                         // ...
+                    }
+                });
+    }
+
+    private void SignUpForm(){
+
+        AlertDialog.Builder myBuilder = new AlertDialog.Builder(LoginActivity.this);
+        View myView = getLayoutInflater().inflate(R.layout.register_dialog, null);
+
+        final EditText ET_regEmail, ET_pWord1, ET_pWord2;
+        Button btn_signUpDone;
+
+        ET_regEmail = myView.findViewById(R.id.ET_regEmail);
+        ET_pWord1 = myView.findViewById(R.id.ET_pWord1);
+        ET_pWord2 = myView.findViewById(R.id.ET_pWord2);
+        btn_signUpDone = myView.findViewById(R.id.btn_signUpDone);
+
+        myBuilder.setView(myView);
+        final AlertDialog Dialog = myBuilder.create();
+        Dialog.show();
+
+
+        btn_signUpDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = ET_regEmail.getText().toString().trim();
+                String pass1 = ET_pWord1.getText().toString().trim();
+                String pass2 = ET_pWord2.getText().toString().trim();
+
+                if(pass1.equals(pass2)){
+                    signUp(email,pass1,Dialog);
+
+                }else{
+                    Toast.makeText(getApplicationContext(),"Password doesn't match",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+    }
+
+    ProgressDialog dialog;
+
+    private void signUp(final String Email, final String password, final AlertDialog Dialog){
+
+        //String email = inputEmail.getText().toString().trim();
+        //String password = inputPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(Email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        dialog = ProgressDialog.show(LoginActivity.this, "Sign Up",
+                "Registration processing. Please wait...", true);
+        //progressBar.setVisibility(View.VISIBLE);
+        //create user
+        mAuth.createUserWithEmailAndPassword(Email, password)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.i(TAG,"createUserWithEmail:onComplete:" + task.isSuccessful());
+                        //progressBar.setVisibility(View.GONE);
+
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Registration failed." + task.getException(),
+                                    Toast.LENGTH_LONG).show();
+                            dialog.cancel();
+
+                        } else {
+
+                            Toast.makeText(getApplicationContext(), "Registration Complete Successfully, Please login now",
+                                    Toast.LENGTH_LONG).show();
+
+                            Dialog.cancel();
+                            dialog.dismiss();
+                            //startActivity(new Intent(Login.this, MainActivity.class));
+                            //finish();
+                        }
                     }
                 });
     }

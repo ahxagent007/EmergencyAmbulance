@@ -49,6 +49,13 @@
         android:layout_margin="10dp"
         android:id="@+id/btn_login"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign-up"
+        android:layout_margin="10dp"
+        android:id="@+id/btn_signup"/>
+
 
 
 </LinearLayout>
