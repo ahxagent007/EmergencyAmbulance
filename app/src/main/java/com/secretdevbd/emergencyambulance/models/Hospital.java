@@ -5,8 +5,17 @@ public class Hospital {
     long id;
     String category, name, title;
     double latitude, Longitude;
+    public double distance_from_user;
 
     public Hospital() {
+    }
+
+    public double getDistance_from_user() {
+        return distance_from_user;
+    }
+
+    public void setDistance_from_user(double distance_from_user) {
+        this.distance_from_user = distance_from_user;
     }
 
     public Hospital(long id, String category, String name, String title, double latitude, double longitude) {
@@ -22,7 +31,7 @@ public class Hospital {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,4 +74,6 @@ public class Hospital {
     public void setLongitude(double longitude) {
         Longitude = longitude;
     }
+
+
 }

@@ -87,7 +87,6 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
 
     private FusedLocationProviderClient fusedLocationClient;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,7 +236,7 @@ public class Maps extends AppCompatActivity implements GoogleMap.OnMarkerClickLi
 
         }
     };
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void getLocationAndSetMap(){
 
         if (Build.VERSION.SDK_INT >= 23) {

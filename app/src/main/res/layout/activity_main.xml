@@ -40,10 +40,10 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hospitals"
+                android:text="Nearest Hospital Search"
                 android:layout_margin="20dp"
                 android:padding="30dp"
-                android:textSize="30dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 android:id="@+id/btn_hospitals"
                 android:background="@color/teal_200"/>
