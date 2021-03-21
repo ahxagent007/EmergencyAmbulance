@@ -4,49 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddAmbulance"
+    tools:context=".AddHospital"
     android:orientation="vertical"
+    android:padding="20dp"
     android:gravity="center"
     android:background="#E8E8E8">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Ambulance"
+        android:text="Add Doctor"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:padding="10dp"/>
 
     <EditText
-        android:id="@+id/ET_reg"
+        android:id="@+id/ET_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="Registration Number"/>
+        android:hint="Name"/>
 
     <EditText
-        android:id="@+id/ET_phone"
+        android:id="@+id/ET_designation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="Contact Number"/>
+        android:hint="Designation"/>
+
 
     <EditText
-        android:id="@+id/ET_lat"
+        android:id="@+id/ET_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="Latitude"
-        android:inputType="numberDecimal"/>
+        android:hint="Details"/>
 
-    <EditText
-        android:id="@+id/ET_long"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Longitude"
-        android:inputType="numberDecimal"/>
+        android:text="Hospital"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:textColor="@color/black"/>
 
+    <Spinner
+        android:id="@+id/SP_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/btn_add"

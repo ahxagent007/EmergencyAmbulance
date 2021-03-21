@@ -2,10 +2,18 @@ package com.secretdevbd.emergencyambulance.models;
 
 public class Ambulance {
     long id;
-    String reg_no, phone;
+    String name, reg_no, phone;
     double latitude, longitude;
 
     public Ambulance() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Ambulance(long id, String reg_no, String phone, double latitude, double longitude) {

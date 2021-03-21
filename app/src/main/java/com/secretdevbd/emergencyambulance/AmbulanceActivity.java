@@ -1,5 +1,6 @@
 package com.secretdevbd.emergencyambulance;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,6 +31,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +52,12 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
     FirebaseDatabase database;
     DatabaseReference myRef;
 
+    double latitude = 23.737820;
+    double longitude = 90.395290;
+
+
+    private FusedLocationProviderClient fusedLocationClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +65,8 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Ambulance");
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(AmbulanceActivity.this);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,7 +86,7 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
                         LatLng hospital = new LatLng(a.getLatitude(), a.getLongitude());
                         googleMapAmbulance.addMarker(new MarkerOptions()
                                 .position(hospital)
-                                .title(a.getPhone()));
+                                .title(a.getReg_no()+":"+a.getName()+":"+a.getPhone())).showInfoWindow();
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                     }
                     getLocationAndSetMap();
@@ -117,20 +130,24 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        try{
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        } catch (Exception e ){
-            Toast.makeText(getApplicationContext(),"Can't Access user location", Toast.LENGTH_LONG).show();
-        }
+        fusedLocationClient.getLastLocation()
+            .addOnSuccessListener(AmbulanceActivity.this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        // Logic to handle location object
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        zoomToCurrentLoc();
+                        Log.i(TAG, "onSuccess: "+latitude+" "+longitude);
+                    }else {
+                        Log.i(TAG, "NEW LOCATION NULL");
+                    }
+                }
 
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListener);
+            });
 
-        zoomToCurrentLoc();
-
-        Log.i(TAG, "ownLocation LOC :: "+latitude+","+longitude);
     }
 
     private void zoomToCurrentLoc(){
@@ -138,7 +155,7 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
         googleMapAmbulance.addMarker(new MarkerOptions()
                 .position(ownLocation)
                 .title("Your Location")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))).showInfoWindow();
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(ownLocation));
         moveToCurrentLocation(ownLocation);
     }
@@ -153,7 +170,7 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
 
 
     }
-
+/*
     private final LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             latitude = location.getLatitude();
@@ -174,7 +191,7 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
         public void onProviderDisabled(String s) {
 
         }
-    };
+    };*/
 
 
     private static final int PERMISSION_REQUES_CODE = 99;
@@ -183,8 +200,6 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
 
-    double latitude = 23.737820;
-    double longitude = 90.395290;
 
     public boolean checkAndRequestPermissions() {
 
@@ -227,10 +242,11 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
         googleMapAmbulance = googleMap;
         googleMapAmbulance.setOnMarkerClickListener(this);
 
+
         Log.i(TAG, "onMapReady : "+ambulanceArray.size());
 
         for(int i = 0 ; i < ambulanceArray.size() ; i++) {
-            createMarker(ambulanceArray.get(i).getLatitude(), ambulanceArray.get(i).getLongitude(), ambulanceArray.get(i).getReg_no()+" "+ambulanceArray.get(i).getPhone(), "Snippet", 0);
+            createMarker(ambulanceArray.get(i).getLatitude(), ambulanceArray.get(i).getLongitude(), ambulanceArray.get(i).getReg_no()+":"+ambulanceArray.get(i).getName()+":"+ambulanceArray.get(i).getPhone(), "Snippet", 0);
         }
     }
 
@@ -241,12 +257,16 @@ public class AmbulanceActivity extends AppCompatActivity implements OnMapReadyCa
     }
     final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 22;
     String number;
-    public void callAmbulance(String number){
-        this.number = number;
+    public void callAmbulance(String title){
+        Log.i(TAG, title);
+        this.number = title.split(":")[2];
+        String name = title.split(":")[1];
+        String reg_no = title.split(":")[0];
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Call");
-        builder.setMessage("Do you want to call this Ambulance ("+number+")");
+        builder.setMessage("Do you want to call this Ambulance ("+reg_no+"):"+name+" ("+number+")");
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 

@@ -12,7 +12,7 @@ import android.widget.Spinner;
 
 public class Admin extends AppCompatActivity {
 
-    Button btn_hospital, btn_ambulance;
+    Button btn_hospital, btn_ambulance, btn_doctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class Admin extends AppCompatActivity {
 
         btn_hospital = findViewById(R.id.btn_hospital);
         btn_ambulance = findViewById(R.id.btn_ambulance);
+        btn_doctor = findViewById(R.id.btn_doctor);
 
         btn_hospital.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +36,12 @@ public class Admin extends AppCompatActivity {
             }
         });
 
+        btn_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AddDoctorActivity.class));
+            }
+        });
 
     }
 

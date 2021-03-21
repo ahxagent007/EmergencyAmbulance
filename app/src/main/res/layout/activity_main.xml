@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#E8E8E8">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +35,8 @@
                 android:padding="30dp"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:id="@+id/btn_ambulance"/>
+                android:id="@+id/btn_ambulance"
+                android:background="@color/teal_200"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,7 +45,8 @@
                 android:padding="30dp"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:id="@+id/btn_hospitals"/>
+                android:id="@+id/btn_hospitals"
+                android:background="@color/teal_200"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +55,8 @@
                 android:padding="30dp"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:id="@+id/btn_maps"/>
+                android:id="@+id/btn_maps"
+                android:background="@color/teal_200"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +65,8 @@
                 android:padding="30dp"
                 android:textSize="30dp"
                 android:textStyle="bold"
-                android:id="@+id/btn_admin"/>
+                android:id="@+id/btn_admin"
+                android:background="@color/teal_200"/>
 
         </LinearLayout>
 

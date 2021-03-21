@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="#E8E8E8">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -70,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:text="Sign-Up"
                 android:layout_margin="10dp"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:background="@color/teal_200"/>
 
 
         </LinearLayout>

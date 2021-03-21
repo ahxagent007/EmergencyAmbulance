@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Admin"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#E8E8E8">
 
     <Button
         android:layout_width="match_parent"
@@ -16,7 +17,8 @@
         android:padding="20dp"
         android:textStyle="bold"
         android:textSize="20dp"
-        android:id="@+id/btn_hospital"/>
+        android:id="@+id/btn_hospital"
+        android:background="@color/teal_200"/>
 
     <Button
         android:layout_width="match_parent"
@@ -26,6 +28,18 @@
         android:padding="20dp"
         android:textStyle="bold"
         android:textSize="20dp"
-        android:id="@+id/btn_ambulance"/>
+        android:id="@+id/btn_ambulance"
+        android:background="@color/teal_200"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Doctor"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:id="@+id/btn_doctor"
+        android:background="@color/teal_200"/>
 
 </LinearLayout>
