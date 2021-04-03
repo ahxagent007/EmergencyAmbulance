@@ -48,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-
-
         ET_email = findViewById(R.id.ET_email);
         ET_pass = findViewById(R.id.ET_pass);
         btn_login = findViewById(R.id.btn_login);
@@ -83,17 +81,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        Toast.makeText(getApplicationContext(), "Checking for login information, Please wait.", Toast.LENGTH_LONG).show();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Log.i(TAG, "Current user logged in");
-            /*Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            i.putExtra("user", currentUser);
-            startActivity(i);
-            finish();*/
+            Toast.makeText(getApplicationContext(),"Current user logged already in", Toast.LENGTH_SHORT).show();
             getUserData(currentUser);
+
         }else {
             Log.i(TAG, "NO user logged in");
+            Toast.makeText(getApplicationContext(),"No User logged in, Please login.", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -48,7 +48,14 @@
         android:hint="Longitude"
         android:inputType="numberDecimal"/>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/ET_cat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Category"/>
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -89,7 +96,7 @@
             android:text="Diabetics"
             android:onClick="onCheckboxClicked"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <Button
         android:id="@+id/btn_add"

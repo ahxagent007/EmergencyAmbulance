@@ -15,9 +15,9 @@ import com.secretdevbd.emergencyambulance.models.Hospital;
 
 public class AddHospital extends AppCompatActivity {
 
-    CheckBox chk_diabetics, chk_all, chk_heart, chk_eye;
+    ///CheckBox chk_diabetics, chk_all, chk_heart, chk_eye;
     Button btn_add;
-    EditText ET_name, ET_title, ET_lat, ET_long;
+    EditText ET_name, ET_title, ET_lat, ET_long, ET_cat;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -30,21 +30,23 @@ public class AddHospital extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Hospital");
 
-        chk_diabetics = findViewById(R.id.chk_diabetics);
+        /*chk_diabetics = findViewById(R.id.chk_diabetics);
         chk_all = findViewById(R.id.chk_all);
         chk_heart = findViewById(R.id.chk_heart);
-        chk_eye = findViewById(R.id.chk_eye);
+        chk_eye = findViewById(R.id.chk_eye);*/
         btn_add = findViewById(R.id.btn_add);
+
 
         ET_name = findViewById(R.id.ET_name);
         ET_title = findViewById(R.id.ET_title);
         ET_lat = findViewById(R.id.ET_lat);
         ET_long = findViewById(R.id.ET_long);
+        ET_cat = findViewById(R.id.ET_cat);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String category = "";
+                /*String category = "";
                 if(chk_diabetics.isChecked()){
                     category += "Diabetics, ";
                 }
@@ -56,12 +58,13 @@ public class AddHospital extends AppCompatActivity {
                 }
                 if(chk_eye.isChecked()){
                     category += "Eye,";
-                }
+                }*/
                 //Toast.makeText(getApplicationContext(), category, Toast.LENGTH_SHORT).show();
+                String category = ET_cat.getText().toString();
                 if (category != ""){
                     addHospitalToFirebase(category, ET_name.getText().toString(), ET_title.getText().toString(), Double.parseDouble(ET_lat.getText().toString()), Double.parseDouble(ET_long.getText().toString()));
                 }else {
-                    Toast.makeText(getApplicationContext(), "Please Select at least one category", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Please Enter at least one category", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -74,7 +77,7 @@ public class AddHospital extends AppCompatActivity {
         finish();
     }
 
-    public void onCheckboxClicked(View view) {
+    /*public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
         String str="";
         // Check which checkbox was clicked
@@ -93,5 +96,5 @@ public class AddHospital extends AppCompatActivity {
                 break;
         }
         Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
-    }
+    }*/
 }
