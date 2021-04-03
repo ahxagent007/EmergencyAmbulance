@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.secretdevbd.emergencyambulance.models.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseUser user = (FirebaseUser) getIntent().getExtras().get("user");
+        //FirebaseUser user = (FirebaseUser) getIntent().getExtras().get("user");
+        User user = (User) getIntent().getSerializableExtra("user");
         //Log.i(TAG, user.getEmail());
 
         ET_username = findViewById(R.id.ET_username);
@@ -60,5 +62,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(!user.getRole().equalsIgnoreCase("ADMIN")){
+            btn_admin.setVisibility(View.INVISIBLE);
+        }
     }
 }
