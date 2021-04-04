@@ -15,17 +15,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:text="Xian"
-                android:padding="10dp"
-                android:id="@+id/ET_username"/>
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:text="Xian"
+                    android:padding="10dp"
+                    android:id="@+id/ET_username"/>
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:layout_weight="3"
+                    android:id="@+id/btn_logout"/>
+
+            </LinearLayout>
+
+
 
             <Button
                 android:layout_width="match_parent"

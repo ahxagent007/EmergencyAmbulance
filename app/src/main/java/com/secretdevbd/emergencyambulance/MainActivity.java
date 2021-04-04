@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.secretdevbd.emergencyambulance.models.User;
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "XIAN";
 
     TextView ET_username;
-    Button btn_hospitals, btn_ambulance, btn_maps, btn_admin;
+    Button btn_hospitals, btn_ambulance, btn_maps, btn_admin, btn_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btn_ambulance = findViewById(R.id.btn_ambulance);
         btn_maps = findViewById(R.id.btn_maps);
         btn_admin = findViewById(R.id.btn_admin);
+        btn_logout = findViewById(R.id.btn_logout);
 
         ET_username.setText(user.getEmail());
 
@@ -59,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), Admin.class));
+            }
+        });
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
 
